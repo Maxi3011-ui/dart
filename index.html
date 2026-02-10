@@ -3,72 +3,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maxi – Website</title>
-  <meta name="description" content="Beispiel einer modernen, einfachen Website mit nur einer HTML-Datei." />
+  <title>Darts Scoreboard</title>
   <style>
     :root{
-      --bg: #0b1220;
+      --bg:#0b1220;
       --panel: rgba(255,255,255,.06);
       --panel2: rgba(255,255,255,.10);
+      --line: rgba(255,255,255,.14);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.70);
-      --line: rgba(255,255,255,.14);
-      --accent: #7c3aed;   /* lila */
-      --accent2:#22c55e;   /* grün */
+      --accent:#7c3aed;
+      --good:#22c55e;
+      --bad:#ef4444;
+      --r:18px;
       --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --r: 18px;
-      --max: 1050px;
+      --max: 1100px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
       background:
         radial-gradient(900px 600px at 20% 10%, rgba(124,58,237,.25), transparent 60%),
         radial-gradient(800px 500px at 80% 20%, rgba(34,197,94,.18), transparent 55%),
         radial-gradient(900px 700px at 60% 90%, rgba(59,130,246,.14), transparent 55%),
         var(--bg);
+      min-height:100vh;
     }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:22px}
-    .nav{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(10px);
+    .wrap{max-width:var(--max); margin:0 auto; padding:18px}
+    .top{
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+      padding:14px 16px;
+      border:1px solid var(--line);
       background: rgba(11,18,32,.65);
-      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      position: sticky; top: 10px; z-index: 10;
     }
-    .nav-inner{
-      max-width:var(--max); margin:0 auto;
-      padding:14px 22px;
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
-    }
+    .brand{display:flex; gap:10px; align-items:center; font-weight:800}
     .logo{
       width:34px; height:34px; border-radius:12px;
       background: linear-gradient(135deg, var(--accent), #2563eb);
-      box-shadow: 0 10px 25px rgba(124,58,237,.25);
+      box-shadow: 0 12px 30px rgba(124,58,237,.25);
     }
-    .links{display:flex; gap:14px; flex-wrap:wrap}
-    .links a{
-      padding:8px 10px; border-radius:12px; color:var(--muted);
-    }
-    .links a:hover{background: var(--panel); color:var(--text)}
-    .cta{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    select, input[type="text"]{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline: none;
     }
     .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 14px; border-radius:14px;
+      padding:10px 14px;
+      border-radius:14px;
       border:1px solid var(--line);
       background: var(--panel);
-      color:var(--text);
-      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      color: var(--text);
       cursor:pointer;
       user-select:none;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
     }
     .btn:hover{background: var(--panel2); border-color: rgba(255,255,255,.22)}
     .btn:active{transform: translateY(1px)}
@@ -77,164 +74,121 @@
       border-color: transparent;
       box-shadow: 0 16px 40px rgba(124,58,237,.25);
     }
-    .btn.primary:hover{filter: brightness(1.05)}
-    .hero{
-      padding:46px 0 18px;
+    .grid{
       display:grid;
       grid-template-columns: 1.2fr .8fr;
-      gap:22px;
-      align-items:stretch;
+      gap:14px;
+      margin-top:14px;
     }
-    @media (max-width: 900px){
-      .hero{grid-template-columns: 1fr; padding-top:26px}
-    }
+    @media (max-width: 960px){ .grid{grid-template-columns: 1fr} }
     .card{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       border-radius: var(--r);
       box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .hero-left{padding:28px}
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:8px 12px; border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size: 13px;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fff, var(--accent));
-      box-shadow: 0 0 0 4px rgba(124,58,237,.18);
-    }
-    h1{
-      margin:14px 0 10px;
-      font-size: clamp(34px, 4vw, 52px);
-      line-height:1.05;
-      letter-spacing:-.8px;
-    }
-    .lead{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size: 16.5px;
-      line-height:1.55;
-      max-width: 58ch;
-    }
-    .hero-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    .mini{
-      margin-top:14px;
-      display:flex; gap:12px; flex-wrap:wrap;
-      color:var(--muted); font-size: 13.5px;
-    }
+    .card h2{margin:0; padding:14px 16px; border-bottom:1px solid var(--line); font-size:16px}
+    .card .body{padding:14px 16px}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .muted{color:var(--muted)}
     .pill{
-      border:1px dashed rgba(255,255,255,.18);
-      padding:7px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.04);
-    }
-    .hero-right{
-      padding:22px;
-      display:grid;
-      grid-template-rows:auto 1fr;
-      gap:14px;
-    }
-    .statgrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-    @media (max-width: 480px){
-      .statgrid{grid-template-columns: 1fr}
-    }
-    .stat{
-      padding:14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.05);
+      font-size: 13px;
+      color: var(--muted);
     }
-    .stat b{display:block; font-size:18px}
-    .stat span{color:var(--muted); font-size:13px}
-    .panel{
-      padding:16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      overflow:hidden;
-    }
-    .bar{
-      height:10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.12);
-      overflow:hidden;
-      margin-top:10px;
-    }
-    .bar > i{
-      display:block; height:100%;
-      width: 72%;
-      background: linear-gradient(90deg, var(--accent), #2563eb, var(--accent2));
-    }
-    .section{padding:18px 0}
-    .section h2{
-      margin:0 0 10px;
-      font-size: 22px;
-      letter-spacing:-.3px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-    }
-    @media (max-width: 900px){
-      .grid{grid-template-columns: 1fr}
-    }
-    .feature{
-      padding:18px;
-    }
-    .icon{
-      width:40px; height:40px; border-radius:14px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);
-      margin-bottom:10px;
-    }
-    .feature p{color:var(--muted); margin:6px 0 0; line-height:1.55}
-    .split{
+    .pill b{color:var(--text)}
+    .players{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:14px;
-      align-items:start;
+      gap:10px;
     }
-    @media (max-width: 900px){
-      .split{grid-template-columns: 1fr}
+    @media (max-width: 640px){ .players{grid-template-columns: 1fr} }
+    .player{
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
     }
-    .form{
-      padding:18px;
+    .player.active{
+      border-color: rgba(124,58,237,.55);
+      box-shadow: 0 0 0 3px rgba(124,58,237,.18) inset;
     }
-    label{display:block; font-size:13px; color:var(--muted); margin:10px 0 6px}
-    input, textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
+    .pname{display:flex; justify-content:space-between; gap:10px; align-items:center}
+    .score{
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      margin-top:6px;
+    }
+    .turnbox{
+      border-top: 1px dashed rgba(255,255,255,.18);
+      margin-top:10px; padding-top:10px;
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
+    .chip{
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.18);
-      color: var(--text);
-      outline:none;
-    }
-    textarea{min-height:110px; resize:vertical}
-    input:focus, textarea:focus{border-color: rgba(124,58,237,.55)}
-    .note{color:var(--muted); font-size: 13px; margin-top:10px}
-    footer{
-      margin-top:26px;
-      padding:18px 0 30px;
-      border-top:1px solid var(--line);
-      color:var(--muted);
       font-size: 13px;
+      color: var(--text);
     }
-    .right{float:right}
+    .chip.good{border-color: rgba(34,197,94,.5); color: rgba(220,255,235,.95)}
+    .chip.bad{border-color: rgba(239,68,68,.55); color: rgba(255,225,225,.95)}
+    .board{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .boardGrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:8px;
+    }
+    .seg{
+      padding:10px 0;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .seg:hover{background: rgba(255,255,255,.08)}
+    .seg small{display:block; color:var(--muted); margin-top:2px}
+    .krow{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: var(--muted);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding:4px 8px;
+      border-radius:10px;
+    }
+    .log{
+      max-height: 340px;
+      overflow:auto;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background: rgba(0,0,0,.18);
+      padding:10px 12px;
+      line-height:1.55;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
     .toast{
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
+      position: fixed; right: 16px; bottom: 16px;
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.14);
       border-radius: 16px;
@@ -243,198 +197,386 @@
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
       display:none;
-      max-width: 320px;
+      max-width: 360px;
+      z-index: 50;
     }
+    .hint{margin-top:10px; color:var(--muted); font-size:13px}
+    .divider{height:1px; background: rgba(255,255,255,.12); margin:10px 0}
   </style>
 </head>
-
 <body>
-  <div class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="#top" aria-label="Start">
-        <span class="logo" aria-hidden="true"></span>
-        <span>Maxi</span>
-      </a>
-
-      <div class="links" role="navigation" aria-label="Menü">
-        <a href="#features">Features</a>
-        <a href="#about">Über mich</a>
-        <a href="#contact">Kontakt</a>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px; color:var(--muted); margin-bottom:2px;">Darts</div>
+          <div>Scoreboard</div>
+        </div>
       </div>
 
-      <div class="cta">
-        <a class="btn" href="#contact">Nachricht</a>
-        <button class="btn primary" id="themeBtn" type="button">Aktion</button>
+      <div class="controls">
+        <label class="pill" title="Startscore">
+          <span class="muted">Start:</span>
+          <select id="startScore">
+            <option value="301">301</option>
+            <option value="501" selected>501</option>
+          </select>
+        </label>
+
+        <label class="pill" title="Spieleranzahl">
+          <span class="muted">Spieler:</span>
+          <select id="playersCount">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+          </select>
+        </label>
+
+        <label class="pill" title="Checkout-Regel">
+          <input id="doubleOut" type="checkbox" style="transform: translateY(1px)" />
+          <span>Double-Out</span>
+        </label>
+
+        <button class="btn" id="undoBtn" type="button">Undo</button>
+        <button class="btn" id="nextBtn" type="button">Nächster Spieler</button>
+        <button class="btn primary" id="newBtn" type="button">Neues Spiel</button>
       </div>
     </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Spielstand</h2>
+        <div class="body">
+          <div class="players" id="players"></div>
+          <div class="divider"></div>
+          <div class="row">
+            <span class="pill"><span class="muted">Runde:</span> <b id="turnNum">1</b></span>
+            <span class="pill"><span class="muted">Darts in Runde:</span> <b id="dartsLeft">3</b></span>
+            <span class="pill"><span class="muted">Letzter Wurf:</span> <b id="lastThrow">–</b></span>
+          </div>
+          <div class="hint">
+            Tipp: Klicke unten auf Felder (S/D/T/ Bull). Bust wird automatisch erkannt.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Spiel-Log</h2>
+        <div class="body">
+          <div class="krow">
+            <div><b>Shortcuts</b></div>
+            <div class="row">
+              <span class="kbd">U</span> Undo
+              <span class="kbd">N</span> Next
+              <span class="kbd">R</span> Restart
+            </div>
+          </div>
+          <div style="height:10px"></div>
+          <div class="log" id="log"></div>
+        </div>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2>Dartboard (klickbar)</h2>
+        <div class="body board">
+          <div class="krow">
+            <div class="muted">Wähle Multiplikator:</div>
+            <div class="row">
+              <button class="btn" data-m="S" id="mS">Single</button>
+              <button class="btn" data-m="D" id="mD">Double</button>
+              <button class="btn" data-m="T" id="mT">Triple</button>
+              <button class="btn" data-m="SB" id="mSB">Single Bull (25)</button>
+              <button class="btn" data-m="DB" id="mDB">Bullseye (50)</button>
+            </div>
+          </div>
+
+          <div class="boardGrid" id="numbers"></div>
+
+          <div class="hint">
+            Hinweis: Das ist ein Scoreboard-Spiel (wie im Pub). Es simuliert nicht den echten Treffer-Winkel – du klickst einfach, was du getroffen hast.
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
-
-  <main id="top" class="wrap">
-    <section class="hero">
-      <div class="card hero-left">
-        <div class="kicker"><span class="dot"></span> Online mit GitHub Pages • ganz ohne Server</div>
-        <h1>Eine moderne Website – <br/>in nur einer Datei.</h1>
-        <p class="lead">
-          Das ist eine Beispiel-Seite, die du direkt in GitHub als <b>index.html</b> speichern kannst.
-          Sie enthält Navigation, Bereiche, Cards, ein Kontaktformular-Layout und ein bisschen Interaktion.
-        </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#features">Features ansehen</a>
-          <a class="btn" href="#about">Mehr erfahren</a>
-        </div>
-        <div class="mini">
-          <span class="pill">✅ Responsive</span>
-          <span class="pill">✅ Nur HTML + CSS + JS</span>
-          <span class="pill">✅ Perfekt für GitHub Pages</span>
-        </div>
-      </div>
-
-      <aside class="card hero-right">
-        <div class="statgrid">
-          <div class="stat">
-            <b>1 Datei</b>
-            <span>Einfach zu starten</span>
-          </div>
-          <div class="stat">
-            <b>0 €</b>
-            <span>Kostenlos hosten</span>
-          </div>
-          <div class="stat">
-            <b>⚡</b>
-            <span>Schnell & leicht</span>
-          </div>
-        </div>
-
-        <div class="panel">
-          <b>Live-Status</b>
-          <div class="note">Klick auf „Aktion“ oben rechts.</div>
-          <div class="bar" aria-label="Fortschritt"><i></i></div>
-          <div class="note">Tipp: Passe Farben oben im CSS bei <code>:root</code> an.</div>
-        </div>
-      </aside>
-    </section>
-
-    <section id="features" class="section">
-      <h2>Features</h2>
-      <div class="grid">
-        <div class="card feature">
-          <div class="icon">🎨</div>
-          <b>Modernes Design</b>
-          <p>Cards, weiche Hintergründe, schöne Abstände – ohne Framework.</p>
-        </div>
-        <div class="card feature">
-          <div class="icon">📱</div>
-          <b>Responsive</b>
-          <p>Sieht auf Handy, Tablet und Desktop gut aus (Grid bricht automatisch um).</p>
-        </div>
-        <div class="card feature">
-          <div class="icon">🧠</div>
-          <b>Einfach zu ändern</b>
-          <p>Texte kannst du direkt in der Datei ersetzen. Farben stehen oben im CSS.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section split">
-      <div class="card feature">
-        <h2>Über mich</h2>
-        <p class="lead" style="margin-top:6px">
-          Hier kannst du in 3–6 Sätzen schreiben, wer du bist und was du machst.
-          Beispiel: „Ich baue gerade meine erste Website und will später ein Portfolio daraus machen.“
-        </p>
-        <div class="mini">
-          <span class="pill">📌 Projekte</span>
-          <span class="pill">🎯 Ziele</span>
-          <span class="pill">🧩 Skills</span>
-        </div>
-      </div>
-
-      <div class="card feature">
-        <h2>Mini-Projektliste</h2>
-        <p class="lead" style="margin-top:6px">
-          Du kannst hier Links zu Projekten setzen (GitHub Repos, PDFs, etc.).
-        </p>
-        <ul style="margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.7">
-          <li><a href="#" onclick="return false;">Projekt 1 – Demo</a></li>
-          <li><a href="#" onclick="return false;">Projekt 2 – Demo</a></li>
-          <li><a href="#" onclick="return false;">Projekt 3 – Demo</a></li>
-        </ul>
-        <p class="note">Später kannst du das durch echte Links ersetzen.</p>
-      </div>
-    </section>
-
-    <section id="contact" class="section split">
-      <div class="card form">
-        <h2>Kontakt</h2>
-        <p class="note" style="margin-top:6px">
-          Das Formular sendet noch nichts (weil GitHub Pages kein Backend hat). Es zeigt nur eine Bestätigung.
-        </p>
-
-        <form id="contactForm">
-          <label for="name">Name</label>
-          <input id="name" name="name" placeholder="Max Mustermann" required />
-
-          <label for="email">E-Mail</label>
-          <input id="email" name="email" type="email" placeholder="max@mail.de" required />
-
-          <label for="msg">Nachricht</label>
-          <textarea id="msg" name="msg" placeholder="Hallo Maxi, ..."></textarea>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-            <button class="btn primary" type="submit">Absenden</button>
-            <button class="btn" type="reset">Zurücksetzen</button>
-          </div>
-
-          <p class="note">Wenn du echtes Senden willst: z. B. Formspree / Netlify Forms.</p>
-        </form>
-      </div>
-
-      <div class="card feature">
-        <h2>Infos</h2>
-        <p class="lead" style="margin-top:6px">
-          Hier kannst du deine Kontaktdaten oder Social Links eintragen.
-        </p>
-        <div class="panel" style="margin-top:10px">
-          <b>Beispiele</b>
-          <div class="note">📧 E-Mail: dein.name@example.com</div>
-          <div class="note">🔗 GitHub: github.com/Maxi3011-ui</div>
-          <div class="note">📍 Ort: München / Bozen</div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <span>© <span id="year"></span> Maxi • GitHub Pages Demo</span>
-      <span class="right">Made with HTML/CSS/JS</span>
-    </footer>
-  </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // Jahr automatisch
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Kleines Toast-Feedback
-    const toast = document.getElementById("toast");
-    function showToast(text){
-      toast.textContent = text;
+    // ======= Helper UI =======
+    const $ = (id) => document.getElementById(id);
+    const toast = $("toast");
+    function showToast(msg){
+      toast.textContent = msg;
       toast.style.display = "block";
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.style.display = "none", 2800);
+      showToast._t = setTimeout(() => toast.style.display = "none", 2500);
     }
 
-    // "Aktion" Button
-    document.getElementById("themeBtn").addEventListener("click", () => {
-      showToast("✅ Aktion ausgeführt! Du kannst hier später echte Funktionen einbauen.");
+    // ======= Game State =======
+    const SEQ = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]; // Dartboard order
+    let state = null;
+
+    function defaultPlayers(n, start){
+      const arr = [];
+      for(let i=0;i<n;i++){
+        arr.push({
+          name: n === 1 ? "Spieler" : `Spieler ${i+1}`,
+          score: start,
+          // current turn data
+          turnThrows: [],   // { label, value, mult, base }
+          turnStartScore: start
+        });
+      }
+      return arr;
+    }
+
+    // History stack for Undo (simple but robust)
+    const history = [];
+
+    function snapshot(){
+      history.push(JSON.stringify(state));
+      if(history.length > 200) history.shift();
+    }
+
+    function restore(){
+      if(history.length === 0){
+        showToast("Nichts zum Undo.");
+        return;
+      }
+      state = JSON.parse(history.pop());
+      renderAll();
+      showToast("Undo ✅");
+    }
+
+    function newGame(){
+      const start = parseInt($("startScore").value, 10);
+      const pc = parseInt($("playersCount").value, 10);
+      const doubleOut = $("doubleOut").checked;
+
+      state = {
+        start,
+        players: defaultPlayers(pc, start),
+        active: 0,
+        dartsLeft: 3,
+        turn: 1,
+        doubleOut,
+        lastThrow: "–",
+        finished: false
+      };
+      history.length = 0;
+      logClear();
+      logLine(`Neues Spiel: ${pc} Spieler, Start ${start}, ${doubleOut ? "Double-Out" : "Single-Out"}\n`);
+      renderAll();
+    }
+
+    // ======= Scoring =======
+    function isCheckoutValid(newScore, throwObj){
+      // if doubleOut enabled, final throw must be a double or bullseye (50)
+      if(!state.doubleOut) return true;
+      if(newScore !== 0) return true; // only care when finishing
+      return (throwObj.mult === "D") || (throwObj.mult === "DB"); // DB is 50, counts as double bull
+    }
+
+    function applyThrow(mult, base){
+      if(state.finished) return;
+
+      const p = state.players[state.active];
+      if(state.dartsLeft <= 0){
+        showToast("Runde voll. Klick 'Nächster Spieler'.");
+        return;
+      }
+
+      snapshot();
+
+      const value = calcValue(mult, base);
+      const label = labelThrow(mult, base, value);
+
+      // Tentative score
+      const tentative = p.score - value;
+
+      // Bust rules:
+      // - if below 0 -> bust
+      // - if equals 1 -> bust (cannot finish on 1)
+      // - if equals 0 but checkout invalid -> bust
+      let bust = false;
+      if(tentative < 0) bust = true;
+      if(tentative === 1) bust = true;
+      if(tentative === 0 && !isCheckoutValid(tentative, {mult, base})) bust = true;
+
+      p.turnThrows.push({ label, value, mult, base, bust });
+      state.dartsLeft -= 1;
+      state.lastThrow = label;
+
+      if(bust){
+        // revert score to start of turn, end turn immediately
+        p.score = p.turnStartScore;
+        state.dartsLeft = 0;
+        logLine(`${p.name}: ${label} → BUST! (Runde zählt nicht)`);
+        showToast("BUST! Runde zählt nicht.");
+      } else {
+        p.score = tentative;
+        logLine(`${p.name}: ${label} → Rest ${p.score}`);
+        if(p.score === 0){
+          state.finished = true;
+          logLine(`\n🏆 ${p.name} gewinnt!`);
+          showToast(`${p.name} gewinnt! 🏆`);
+        }
+      }
+
+      renderAll();
+    }
+
+    function calcValue(mult, base){
+      if(mult === "SB") return 25;
+      if(mult === "DB") return 50;
+      const m = (mult === "S") ? 1 : (mult === "D") ? 2 : 3;
+      return base * m;
+    }
+
+    function labelThrow(mult, base, value){
+      if(mult === "SB") return "Single Bull (25)";
+      if(mult === "DB") return "Bullseye (50)";
+      const prefix = (mult === "S") ? "S" : (mult === "D") ? "D" : "T";
+      return `${prefix}${base} (${value})`;
+    }
+
+    function nextPlayer(){
+      if(state.finished) return;
+
+      snapshot();
+
+      // End of current player's turn -> reset their turn data
+      const p = state.players[state.active];
+      // If player used less than 3 darts without bust, the score is already applied.
+      // For a new turn, remember start score and clear turn throws.
+      p.turnThrows = [];
+      p.turnStartScore = p.score;
+
+      // Move active player
+      state.active = (state.active + 1) % state.players.length;
+      state.dartsLeft = 3;
+      if(state.active === 0) state.turn += 1;
+
+      const np = state.players[state.active];
+      logLine(`— Nächster: ${np.name} (Runde ${state.turn}) —`);
+      renderAll();
+    }
+
+    // ======= Logging =======
+    function logClear(){ $("log").textContent = ""; }
+    function logLine(s){
+      const el = $("log");
+      el.textContent += (el.textContent ? "\n" : "") + s;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    // ======= Render =======
+    function renderPlayers(){
+      const container = $("players");
+      container.innerHTML = "";
+      state.players.forEach((p, idx) => {
+        const div = document.createElement("div");
+        div.className = "player" + (idx === state.active ? " active" : "");
+        div.innerHTML = `
+          <div class="pname">
+            <div>
+              <b>${escapeHtml(p.name)}</b>
+              <div class="muted" style="font-size:12px; margin-top:2px">Start Runde: ${p.turnStartScore}</div>
+            </div>
+            <button class="btn" style="padding:8px 10px" data-rename="${idx}" type="button">Name</button>
+          </div>
+          <div class="score">${p.score}</div>
+          <div class="turnbox">
+            ${(p.turnThrows.length === 0)
+              ? `<span class="muted">Noch keine Würfe in dieser Runde.</span>`
+              : p.turnThrows.map(t => `<span class="chip ${t.bust ? "bad" : "good"}">${escapeHtml(t.label)}</span>`).join("")
+            }
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // rename handlers
+      container.querySelectorAll("[data-rename]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.getAttribute("data-rename"), 10);
+          const name = prompt("Neuer Name:", state.players[idx].name);
+          if(name && name.trim()){
+            snapshot();
+            state.players[idx].name = name.trim();
+            renderAll();
+          }
+        });
+      });
+    }
+
+    function renderMeta(){
+      $("turnNum").textContent = state.turn;
+      $("dartsLeft").textContent = state.dartsLeft;
+      $("lastThrow").textContent = state.lastThrow;
+      $("nextBtn").disabled = state.finished;
+      $("undoBtn").disabled = history.length === 0;
+    }
+
+    let currentMult = "S";
+    function setMult(m){
+      currentMult = m;
+      // highlight selection
+      ["mS","mD","mT","mSB","mDB"].forEach(id => $(id).classList.remove("primary"));
+      const map = {S:"mS",D:"mD",T:"mT",SB:"mSB",DB:"mDB"};
+      $(map[m]).classList.add("primary");
+    }
+
+    function renderBoard(){
+      const cont = $("numbers");
+      cont.innerHTML = "";
+      SEQ.forEach(n => {
+        const d = document.createElement("div");
+        d.className = "seg";
+        d.innerHTML = `<b>${n}</b><small>Klick</small>`;
+        d.addEventListener("click", () => applyThrow(currentMult, n));
+        cont.appendChild(d);
+      });
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[c]));
+    }
+
+    function renderAll(){
+      renderPlayers();
+      renderMeta();
+    }
+
+    // ======= Wire up =======
+    $("newBtn").addEventListener("click", newGame);
+    $("undoBtn").addEventListener("click", restore);
+    $("nextBtn").addEventListener("click", nextPlayer);
+
+    $("startScore").addEventListener("change", () => showToast("Tipp: Für neue Startzahl auf 'Neues Spiel' klicken."));
+    $("playersCount").addEventListener("change", () => showToast("Tipp: Spielerzahl gilt nach 'Neues Spiel'."));
+    $("doubleOut").addEventListener("change", () => showToast("Tipp: Checkout-Regel gilt nach 'Neues Spiel'."));
+
+    $("mS").addEventListener("click", () => setMult("S"));
+    $("mD").addEventListener("click", () => setMult("D"));
+    $("mT").addEventListener("click", () => setMult("T"));
+    $("mSB").addEventListener("click", () => setMult("SB"));
+    $("mDB").addEventListener("click", () => setMult("DB"));
+
+    // keyboard shortcuts
+    window.addEventListener("keydown", (e) => {
+      if(e.key.toLowerCase() === "u") restore();
+      if(e.key.toLowerCase() === "n") nextPlayer();
+      if(e.key.toLowerCase() === "r") newGame();
     });
 
-    // Fake-Formular (nur Bestätigung)
-    document.getElementById("contactForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      showToast("📩 Danke! (Demo) Formular wurde nicht wirklich gesendet.");
-      e.target.reset();
-    });
+    // init
+    renderBoard();
+    setMult("S");
+    newGame();
   </script>
 </body>
 </html>
